@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { FC } from "react";
 import styled from "styled-components";
 import { ITask } from "../../interface";
@@ -52,6 +52,7 @@ const TodoInput: React.FC<TodoInputProps> = ({ setTodoData, todoData }) => {
         date: "2022",
       },
     ]);
+
     setValue("");
   }
 
