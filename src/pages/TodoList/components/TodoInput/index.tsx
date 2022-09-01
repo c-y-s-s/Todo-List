@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, ChangeEvent } from "react";
 import { FC } from "react";
 import styled from "styled-components";
+import { ITask } from "../../interface";
 const TodoInputBlock = styled.div`
   width: 100%;
 `;
@@ -28,12 +29,42 @@ const TodoTextButton = styled.button`
     color: #fff;
   }
 `;
-const TodoInput = () => {
+
+interface TodoInputProps {
+  setTodoData: React.Dispatch<React.SetStateAction<ITask[]>>;
+  todoData: ITask[];
+}
+
+const TodoInput: React.FC<TodoInputProps> = ({ setTodoData, todoData }) => {
+  const [inputValue, setValue] = useState<string>("");
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>): void {
+    setValue(event.target.value);
+  }
+
+  function handleClick(): void {
+    setTodoData([
+      ...todoData,
+      {
+        id: (todoData.length += 1),
+        text: inputValue,
+        category: "PENDING",
+        date: "2022",
+      },
+    ]);
+    setValue("");
+  }
+
   return (
     <>
       <TodoInputBlock>
-        <Input type="text" placeholder="Task" />
-        <TodoTextButton>Send</TodoTextButton>
+        <Input
+          type="text"
+          placeholder="Task"
+          onChange={handleChange}
+          value={inputValue}
+        />
+        <TodoTextButton onClick={handleClick}>Send</TodoTextButton>
       </TodoInputBlock>
     </>
   );

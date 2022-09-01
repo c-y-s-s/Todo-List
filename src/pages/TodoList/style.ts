@@ -45,3 +45,10 @@ export const MenuBlock = styled.div`
   padding-top: 50px;
   width: 200px;
 `;
+
+export const TodoDataTitle = styled.div`
+  font-family: "Verdana", "sans-serif";
+  color: #e6d9d9;
+  font-size: 5px;
+  padding-top: 20px;
+`;
