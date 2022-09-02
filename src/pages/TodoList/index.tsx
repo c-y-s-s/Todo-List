@@ -6,17 +6,33 @@ import TodoInput from "./components/TodoInput";
 import Categories from "./components/Categories";
 import TodoListData from "./components/TodoListData";
 import { ITask } from "./interface";
-import { useLocalStorage } from "./components/Hooks";
+import moment from "moment";
 const TodoList: FC = () => {
-  // const [todoData, setTodoData] = useState<ITask[]>([]);
-  const [todoData, setTodoData] = useState<ITask[]>(() => {
+  moment.locale("zh-tw"); // zh-tw
+  const date = moment().format("YYYY-MM-DD");
+  const time = moment().format("HH:mm:ss");
+  const [todoData, setTodoData] = useState<ITask[]>((): any => {
     const saved = localStorage.getItem("LEO-todoList") as string;
+
     const initialValue = JSON.parse(saved);
-    return initialValue || "";
+
+    if (initialValue) {
+      return initialValue || [];
+    } else {
+      return [
+        {
+          id: 0,
+          text: "快來輸入待辦事項吧",
+          category: "PENDING",
+          date: date,
+          time: time,
+        },
+      ];
+    }
   });
-  console.log(todoData, "aaa");
 
   const [categoryToggle, setCategoryToggle] = useState<string>("ALL");
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     localStorage.setItem("LEO-todoList", JSON.stringify(todoData));
@@ -34,26 +50,23 @@ const TodoList: FC = () => {
           </Styles.MenuBlock>
           <Styles.TodoDataBlock>
             <Styles.TodoDataBlockTitle>What's Up Leo</Styles.TodoDataBlockTitle>
-            <TodoInput setTodoData={setTodoData} todoData={todoData} />
+            <TodoInput
+              setTodoData={setTodoData}
+              todoData={todoData}
+              setLoading={setLoading}
+              loading={loading}
+            />
             <Categories
               setCategoryToggle={setCategoryToggle}
               categoryToggle={categoryToggle}
               todoData={todoData}
             />
             <Styles.TodoDataTitle>DAILY TASK MENU</Styles.TodoDataTitle>
-            {/* {todoData.map((todoData: ITask) => {
-              return (
-                <TodoListData
-                  todoData={todoData}
-                  key={todoData.id}
-                  categoryToggle={categoryToggle}
-                />
-              );
-            })} */}
             <TodoListData
               todoData={todoData}
               categoryToggle={categoryToggle}
               setTodoData={setTodoData}
+              loading={loading}
             />
           </Styles.TodoDataBlock>
         </Styles.TodoListBlock>

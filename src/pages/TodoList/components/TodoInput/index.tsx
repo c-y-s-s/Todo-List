@@ -1,72 +1,98 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
-import { FC } from "react";
-import styled from "styled-components";
+import React, { useState, ChangeEvent, useRef } from "react";
 import { ITask } from "../../interface";
-const TodoInputBlock = styled.div`
-  width: 100%;
-`;
-
-const Input = styled.input`
-  width: 80%;
-  font-size: 18px;
-  border: none;
-  background: #fff;
-  border-radius: 3px 0px 0px 3px;
-  padding: 5px;
-  ::placeholder {
-    color: #e5d9d9;
-  }
-`;
-const TodoTextButton = styled.button`
-  border: none;
-  font-size: 18px;
-  padding: 5px;
-  border-radius: 0px 3px 3px 0px;
-  transition: 0.3s;
-  cursor: pointer;
-  :hover {
-    background: #060e5f;
-    color: #fff;
-  }
-`;
+import * as Styles from "./style";
+import moment from "moment";
 
 interface TodoInputProps {
   setTodoData: React.Dispatch<React.SetStateAction<ITask[]>>;
   todoData: ITask[];
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  loading: boolean;
 }
 
-const TodoInput: React.FC<TodoInputProps> = ({ setTodoData, todoData }) => {
+const TodoInput: React.FC<TodoInputProps> = ({
+  setTodoData,
+  todoData,
+  setLoading,
+  loading,
+}) => {
+  moment.locale("zh-tw"); // zh-tw
+  const date = moment().format("YYYY-MM-DD");
+  const time = moment().format("HH:mm:ss");
   const [inputValue, setValue] = useState<string>("");
+  const dataId = useRef<number>(todoData.length + 1);
 
   function handleChange(event: ChangeEvent<HTMLInputElement>): void {
     setValue(event.target.value);
   }
 
   function handleClick(): void {
-    setTodoData([
-      ...todoData,
-      {
-        id: (todoData.length += 1),
-        text: inputValue,
-        category: "PENDING",
-        date: "2022",
-      },
-    ]);
+    if (inputValue === "") return;
+
+    setLoading(true);
+
+    if (!loading) {
+      setTimeout(() => {
+        setTodoData([
+          {
+            id: dataId.current,
+            text: inputValue,
+            category: "PENDING",
+            date: date,
+            time: time,
+          },
+          ...todoData,
+        ]);
+
+        setLoading(false);
+      }, 800);
+      dataId.current += 1;
+    }
 
     setValue("");
   }
 
+  function handleInputKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      if (inputValue === "") return;
+
+      setLoading(true);
+
+      if (!loading) {
+        setTimeout(() => {
+          setTodoData([
+            {
+              id: dataId.current,
+              text: inputValue,
+              category: "PENDING",
+              date: date,
+              time: time,
+            },
+            ...todoData,
+          ]);
+
+          setLoading(false);
+        }, 800);
+        dataId.current += 1;
+      }
+
+      setValue("");
+    }
+  }
   return (
     <>
-      <TodoInputBlock>
-        <Input
+      <Styles.TodoInputBlock>
+        <Styles.Input
           type="text"
           placeholder="Task"
           onChange={handleChange}
+          onKeyUp={handleInputKeyUp}
           value={inputValue}
         />
-        <TodoTextButton onClick={handleClick}>Send</TodoTextButton>
-      </TodoInputBlock>
+        <Styles.TodoTextButton onClick={handleClick}>
+          Send
+        </Styles.TodoTextButton>
+      </Styles.TodoInputBlock>
     </>
   );
 };

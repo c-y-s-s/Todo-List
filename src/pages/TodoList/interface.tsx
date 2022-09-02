@@ -3,4 +3,5 @@ export interface ITask {
   text: string;
   category: string;
   date: string;
+  time: string;
 }
