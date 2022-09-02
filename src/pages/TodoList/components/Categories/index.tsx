@@ -1,5 +1,4 @@
-import React, { MouseEvent, useState } from "react";
-import styled from "styled-components";
+import React, { MouseEvent } from "react";
 import { ITask } from "../../interface";
 import * as Styles from "./style";
 

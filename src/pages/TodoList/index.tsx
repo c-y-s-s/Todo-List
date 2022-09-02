@@ -22,7 +22,7 @@ const TodoList: FC = () => {
       return [
         {
           id: 0,
-          text: "快來輸入待辦事項吧",
+          text: "歡迎你來試用我的作品",
           category: "PENDING",
           date: date,
           time: time,

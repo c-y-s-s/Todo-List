@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const GlobalBackground = styled.div`
-  width: 100vw;
+  max-width: 100vw;
   height: 100vh;
   background: #bcceef;
   display: flex;
@@ -10,8 +10,8 @@ export const GlobalBackground = styled.div`
 `;
 
 export const TodoListBlock = styled.div`
-  width: 658px;
-  height: 750px;
+  width: 630px;
+  height: 680px;
   border: 1px solid black;
   background: #060e5f;
   border-radius: 35px;
