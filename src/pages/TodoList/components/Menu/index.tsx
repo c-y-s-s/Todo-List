@@ -9,6 +9,7 @@ interface menuProps {
 const Menu: React.FC<menuProps> = ({ setCategoryToggle, categoryToggle }) => {
   function handleCategoryClick(event: MouseEvent<HTMLElement>): void {
     const input = event.target as HTMLElement;
+
     switch (input.innerText) {
       case "ALL": {
         setCategoryToggle(input.innerText);
@@ -23,7 +24,6 @@ const Menu: React.FC<menuProps> = ({ setCategoryToggle, categoryToggle }) => {
         break;
       }
       default:
-        console.log("error");
     }
   }
   return (
