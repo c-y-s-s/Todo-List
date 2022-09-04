@@ -1,6 +1,7 @@
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent } from "react";
 import * as Styles from "./style";
 import { ITask } from "../../interface";
+import { usePenCount } from "./usePenCount";
 interface Props {
   categoriesText: string;
   setCategoryToggle: React.Dispatch<React.SetStateAction<string>>;
@@ -14,27 +15,7 @@ const CateGoriesButton: React.FC<Props> = ({
   categoryToggle,
   todoData,
 }) => {
-  // 分類各別筆數
-  let taskPenCount = todoData.reduce<Record<string, number>>(
-    (accumulator, current) => {
-      if (accumulator[current.category]) {
-        accumulator[current.category] += 1;
-      } else {
-        accumulator[current.category] = 1;
-      }
-      return accumulator;
-    },
-    {}
-  );
-
-  let resultPenCount = 0;
-  if (categoriesText === "ALL") {
-    resultPenCount = todoData.length;
-  } else if (categoriesText === "PENDING") {
-    resultPenCount = taskPenCount.PENDING;
-  } else {
-    resultPenCount = taskPenCount.SOLVED;
-  }
+  let { resultPenCount } = usePenCount(todoData, categoriesText);
 
   function handleCategoryClick(event: MouseEvent<HTMLElement>): void {
     const input = event.target as HTMLElement;
