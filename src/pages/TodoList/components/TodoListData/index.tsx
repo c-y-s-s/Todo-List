@@ -55,39 +55,45 @@ const TodoListData: React.FC<TodoListDataProps> = ({
         </Styles.LoadingBlock>
       ) : categoryToggle === "ALL" ? (
         todoData.map((item) => {
-          return transitions((props) => (
-            <animated.div
-              style={{
-                ...props,
-              }}
-            >
-              <Styles.TodoLastingBlock>
-                <Styles.TodoDate>{item.date}</Styles.TodoDate>
-                <Styles.TodoDate>{item.time}</Styles.TodoDate>
-              </Styles.TodoLastingBlock>
-              <Styles.TodoDataItem>
-                <Styles.TodoDataContentBlock>
-                  <Styles.TodoDataItemCheck>
-                    <Styles.Input
-                      type="checkbox"
-                      checked={item.category === "SOLVED"}
-                      onChange={() => {
-                        handleCategoryChange(item.id);
-                      }}
-                    />
-                  </Styles.TodoDataItemCheck>
-                  <Styles.TodoDataItemText>{item.text}</Styles.TodoDataItemText>
-                </Styles.TodoDataContentBlock>
-                <Styles.TodoDataDelete
-                  onClick={() => {
-                    handleDelete(item.id);
+          return (
+            <div key={item.id}>
+              {transitions((props) => (
+                <animated.div
+                  style={{
+                    ...props,
                   }}
                 >
-                  X
-                </Styles.TodoDataDelete>
-              </Styles.TodoDataItem>
-            </animated.div>
-          ));
+                  <Styles.TodoLastingBlock>
+                    <Styles.TodoDate>{item.date}</Styles.TodoDate>
+                    <Styles.TodoDate>{item.time}</Styles.TodoDate>
+                  </Styles.TodoLastingBlock>
+                  <Styles.TodoDataItem>
+                    <Styles.TodoDataContentBlock>
+                      <Styles.TodoDataItemCheck>
+                        <Styles.Input
+                          type="checkbox"
+                          checked={item.category === "SOLVED"}
+                          onChange={() => {
+                            handleCategoryChange(item.id);
+                          }}
+                        />
+                      </Styles.TodoDataItemCheck>
+                      <Styles.TodoDataItemText>
+                        {item.text}
+                      </Styles.TodoDataItemText>
+                    </Styles.TodoDataContentBlock>
+                    <Styles.TodoDataDelete
+                      onClick={() => {
+                        handleDelete(item.id);
+                      }}
+                    >
+                      X
+                    </Styles.TodoDataDelete>
+                  </Styles.TodoDataItem>
+                </animated.div>
+              ))}
+            </div>
+          );
         })
       ) : (
         todoData
@@ -96,42 +102,46 @@ const TodoListData: React.FC<TodoListDataProps> = ({
           })
 
           .map((item) => {
-            return transitions((props) => (
-              <animated.div
-                style={{
-                  ...props,
-                }}
-              >
-                <Styles.TodoLastingBlock>
-                  <Styles.TodoDate>{item.date}</Styles.TodoDate>
-                  <Styles.TodoDate>{item.time}</Styles.TodoDate>
-                </Styles.TodoLastingBlock>
-
-                <Styles.TodoDataItem>
-                  <Styles.TodoDataContentBlock>
-                    <Styles.TodoDataItemCheck>
-                      <Styles.Input
-                        type="checkbox"
-                        checked={item.category === "SOLVED"}
-                        onChange={() => {
-                          handleCategoryChange(item.id);
-                        }}
-                      />
-                    </Styles.TodoDataItemCheck>
-                    <Styles.TodoDataItemText>
-                      {item.text}
-                    </Styles.TodoDataItemText>
-                  </Styles.TodoDataContentBlock>
-                  <Styles.TodoDataDelete
-                    onClick={() => {
-                      handleDelete(item.id);
+            return (
+              <div key={item.id}>
+                {transitions((props) => (
+                  <animated.div
+                    style={{
+                      ...props,
                     }}
                   >
-                    X
-                  </Styles.TodoDataDelete>
-                </Styles.TodoDataItem>
-              </animated.div>
-            ));
+                    <Styles.TodoLastingBlock>
+                      <Styles.TodoDate>{item.date}</Styles.TodoDate>
+                      <Styles.TodoDate>{item.time}</Styles.TodoDate>
+                    </Styles.TodoLastingBlock>
+
+                    <Styles.TodoDataItem>
+                      <Styles.TodoDataContentBlock>
+                        <Styles.TodoDataItemCheck>
+                          <Styles.Input
+                            type="checkbox"
+                            checked={item.category === "SOLVED"}
+                            onChange={() => {
+                              handleCategoryChange(item.id);
+                            }}
+                          />
+                        </Styles.TodoDataItemCheck>
+                        <Styles.TodoDataItemText>
+                          {item.text}
+                        </Styles.TodoDataItemText>
+                      </Styles.TodoDataContentBlock>
+                      <Styles.TodoDataDelete
+                        onClick={() => {
+                          handleDelete(item.id);
+                        }}
+                      >
+                        X
+                      </Styles.TodoDataDelete>
+                    </Styles.TodoDataItem>
+                  </animated.div>
+                ))}
+              </div>
+            );
           })
       )}
     </>
