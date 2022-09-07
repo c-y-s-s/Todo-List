@@ -17,13 +17,24 @@ const FooterBlock = styled.div`
 const AllTodoListButton = styled.div`
   border: none;
   background: #ff8e6e;
-
   padding: 0.5rem;
 `;
 const DateButton = styled.div`
   border: none;
   background: #ff8e6e;
   padding: 0.5rem;
+`;
+
+const AddTodoButtonBlock = styled.div`
+  // position: fixed;
+  // right: 5%;
+  // top: 90%;
+  // width: 3rem;
+  // height: 3rem;
+  // border: 2px solid black;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
 `;
 
 interface Props {

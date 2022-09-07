@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 import dayjs, { Dayjs } from "dayjs";
+import { ITask } from "../../interface";
 const ContentContainer = styled.div``;
 const ContentBlock = styled.div`
   background: #ffbb91;
@@ -36,11 +37,7 @@ const TextTime = styled.div`
   padding-top: 0.25rem;
   font-size: 12px;
 `;
-export interface ITask {
-  text: string;
-  isDone: Boolean;
-  isDate: string;
-}
+
 interface Props {
   dateValue: Dayjs | null;
   data: ITask[];
@@ -64,21 +61,21 @@ export const TodoData: FC<Props> = ({ dateValue, data }) => {
     newDate = dateValue.year() + newMonth + newDay;
   }
 
-  console.log(data[0].isDate == newDate, "bb");
+  console.log(data[0].dateValue == newDate, "bb");
 
   return (
     <>
       <ContentContainer>
         <ContentBlock>
           {data
-            .filter((item) => newDate === item.isDate)
+            .filter((item) => newDate === item.dateValue)
             .map((item) => {
               return (
                 <TextItem>
                   <CheckInput type="checkbox" />
                   <TextBlock>
-                    <Text>{item.text}</Text>
-                    <TextTime>at 12:00pm</TextTime>
+                    <Text>{item.textValue}</Text>
+                    <TextTime>at {item.timeValue} </TextTime>
                   </TextBlock>
                 </TextItem>
               );

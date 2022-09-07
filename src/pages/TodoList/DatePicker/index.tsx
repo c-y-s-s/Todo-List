@@ -13,12 +13,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { PickersDay } from "@mui/x-date-pickers/PickersDay";
 import Badge from "@mui/material/Badge";
-
-export interface ITask {
-  text: string;
-  isDone: Boolean;
-  isDate: string;
-}
+import { ITask } from "../../interface";
 
 export interface Props {
   data: ITask[];
@@ -76,7 +71,7 @@ const DatePicker: FC<Props> = ({ data, setData, dateValue, setDateValue }) => {
                 !pickersDayProps.outsideCurrentMonth &&
                 data
                   .map((item) => {
-                    return item.isDate;
+                    return item.dateValue;
                   })
                   .indexOf(newDate) >= 0;
               return (

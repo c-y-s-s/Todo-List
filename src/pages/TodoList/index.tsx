@@ -7,11 +7,8 @@ import Footer from "./Footer";
 import dayjs, { Dayjs } from "dayjs";
 import TodoAllData from "./TodoAllData";
 import { useTransition, animated } from "react-spring";
-export interface ITask {
-  text: string;
-  isDone: Boolean;
-  isDate: string;
-}
+import { ITask } from "../interface";
+
 const Container = styled.div`
   height: 100vh;
 `;
@@ -19,29 +16,11 @@ const Container = styled.div`
 export default function TodoList() {
   const [data, setData] = useState<ITask[]>([
     {
-      text: "20220930",
-      isDone: true,
-      isDate: "20220930",
-    },
-    {
-      text: "20220930",
-      isDone: true,
-      isDate: "20220930",
-    },
-    {
-      text: "20220919",
-      isDone: true,
-      isDate: "20220919",
-    },
-    {
-      text: "20220831",
-      isDone: true,
-      isDate: "20220831",
-    },
-    {
-      text: "20220707",
-      isDone: true,
-      isDate: "20220707",
+      id: 0,
+      textValue: "20220930",
+      dateValue: "20220930",
+      timeValue: "05:30",
+      isDone: false,
     },
   ]);
 
@@ -51,14 +30,15 @@ export default function TodoList() {
   const transitions = useTransition(pageToggleSwitch, {
     from: { opacity: 0, transform: "translate(0,75px)" },
     enter: { opacity: 1, transform: "translate(0px, 0px)" },
-    delay: 150,
+    delay: 0,
   });
+  console.log(pageToggleSwitch, "a");
   return (
     <Container>
-      <Title />
+      <Title setData={setData} data={data} />
       {pageToggleSwitch ? (
         <>
-          {transitions((props, item) => (
+          {transitions((props) => (
             <animated.div
               style={{
                 ...props,
@@ -75,7 +55,17 @@ export default function TodoList() {
           ))}
         </>
       ) : (
-        <TodoAllData pageToggleSwitch={pageToggleSwitch} data={data} />
+        <>
+          {transitions((props) => (
+            <animated.div
+              style={{
+                ...props,
+              }}
+            >
+              <TodoAllData pageToggleSwitch={pageToggleSwitch} data={data} />
+            </animated.div>
+          ))}
+        </>
       )}
 
       <Footer setToggleSwitch={setToggleSwitch}></Footer>
