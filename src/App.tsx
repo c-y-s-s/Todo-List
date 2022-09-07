@@ -1,11 +1,14 @@
 import React from "react";
 import { FC } from "react";
 import TodoList from "./pages/TodoList";
+import { StyledEngineProvider } from "@mui/material/styles";
 import "./App.css";
 const App: FC = () => {
   return (
     <>
-      <TodoList />
+      <StyledEngineProvider injectFirst>
+        <TodoList />
+      </StyledEngineProvider>
     </>
   );
 };

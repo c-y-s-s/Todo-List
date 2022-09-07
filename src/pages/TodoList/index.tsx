@@ -1,77 +1,84 @@
-import { FC, useState, useEffect } from "react";
-import * as Styles from "./style";
-import Menu from "./components/Menu";
-import UserData from "./components/UserData";
-import TodoInput from "./components/TodoInput";
-import Categories from "./components/Categories";
-import TodoListData from "./components/TodoListData";
-import { ITask } from "./interface";
-import moment from "moment";
-const TodoList: FC = () => {
-  moment.locale("zh-tw"); // zh-tw
-  const date = moment().format("YYYY-MM-DD");
-  const time = moment().format("HH:mm:ss");
-  const [todoData, setTodoData] = useState<ITask[]>((): any => {
-    const saved = localStorage.getItem("LEO-todoList") as string;
+import { useState } from "react";
+import styled from "styled-components";
+import Title from "./Title";
+import DatePicker from "./DatePicker";
+import TodoData from "./TodoData";
+import Footer from "./Footer";
+import dayjs, { Dayjs } from "dayjs";
+import TodoAllData from "./TodoAllData";
+import { useTransition, animated } from "react-spring";
+export interface ITask {
+  text: string;
+  isDone: Boolean;
+  isDate: string;
+}
+const Container = styled.div`
+  height: 100vh;
+`;
 
-    const initialValue = JSON.parse(saved);
+export default function TodoList() {
+  const [data, setData] = useState<ITask[]>([
+    {
+      text: "20220930",
+      isDone: true,
+      isDate: "20220930",
+    },
+    {
+      text: "20220930",
+      isDone: true,
+      isDate: "20220930",
+    },
+    {
+      text: "20220919",
+      isDone: true,
+      isDate: "20220919",
+    },
+    {
+      text: "20220831",
+      isDone: true,
+      isDate: "20220831",
+    },
+    {
+      text: "20220707",
+      isDone: true,
+      isDate: "20220707",
+    },
+  ]);
 
-    if (initialValue) {
-      return initialValue || [];
-    } else {
-      return [
-        {
-          id: 0,
-          text: "歡迎你來試用我的作品",
-          category: "PENDING",
-          date: date,
-          time: time,
-        },
-      ];
-    }
+  const [dateValue, setDateValue] = useState<Dayjs | null>(dayjs());
+  const [pageToggleSwitch, setToggleSwitch] = useState<boolean>(true);
+
+  const transitions = useTransition(pageToggleSwitch, {
+    from: { opacity: 0, transform: "translate(0,75px)" },
+    enter: { opacity: 1, transform: "translate(0px, 0px)" },
+    delay: 150,
   });
-
-  const [categoryToggle, setCategoryToggle] = useState<string>("ALL");
-  const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    localStorage.setItem("LEO-todoList", JSON.stringify(todoData));
-  }, [todoData]);
   return (
-    <>
-      <Styles.GlobalBackground>
-        <Styles.TodoListBlock>
-          <Styles.MenuBlock>
-            <UserData />
-            <Menu
-              setCategoryToggle={setCategoryToggle}
-              categoryToggle={categoryToggle}
-            />
-          </Styles.MenuBlock>
-          <Styles.TodoDataBlock>
-            <Styles.TodoDataBlockTitle>What's Up Leo</Styles.TodoDataBlockTitle>
-            <TodoInput
-              setTodoData={setTodoData}
-              todoData={todoData}
-              setLoading={setLoading}
-              loading={loading}
-            />
-            <Categories
-              setCategoryToggle={setCategoryToggle}
-              categoryToggle={categoryToggle}
-              todoData={todoData}
-            />
-            <Styles.TodoDataTitle>DAILY TASK MENU</Styles.TodoDataTitle>
-            <TodoListData
-              todoData={todoData}
-              categoryToggle={categoryToggle}
-              setTodoData={setTodoData}
-              loading={loading}
-            />
-          </Styles.TodoDataBlock>
-        </Styles.TodoListBlock>
-      </Styles.GlobalBackground>
-    </>
+    <Container>
+      <Title />
+      {pageToggleSwitch ? (
+        <>
+          {transitions((props, item) => (
+            <animated.div
+              style={{
+                ...props,
+              }}
+            >
+              <DatePicker
+                data={data}
+                setData={setData}
+                dateValue={dateValue}
+                setDateValue={setDateValue}
+              />
+              <TodoData dateValue={dateValue} data={data} />
+            </animated.div>
+          ))}
+        </>
+      ) : (
+        <TodoAllData pageToggleSwitch={pageToggleSwitch} data={data} />
+      )}
+
+      <Footer setToggleSwitch={setToggleSwitch}></Footer>
+    </Container>
   );
-};
-export default TodoList;
+}

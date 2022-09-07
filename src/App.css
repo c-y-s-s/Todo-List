@@ -1,3 +1,8 @@
+* {
+  box-sizing: border-box;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }
@@ -21,4 +26,10 @@
 
 ::-webkit-scrollbar-track {
   box-shadow: transparent;
+}
+.PrivatePickersFadeTransitionGroup-root > div > div > div {
+  justify-content: space-around;
+}
+.PrivatePickersSlideTransition-root div div {
+  justify-content: space-around;
 }
