@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
-
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 const FooterContainer = styled.div`
   position: sticky;
   top: 0;
@@ -50,14 +51,14 @@ const Footer: FC<Props> = ({ setToggleSwitch }) => {
               setToggleSwitch(false);
             }}
           >
-            ALL
+            <ListAltIcon sx={{ color: "#fff" }} />
           </AllTodoListButton>
           <DateButton
             onClick={() => {
               setToggleSwitch(true);
             }}
           >
-            Date
+            <CalendarMonthIcon sx={{ color: "#fff" }} />
           </DateButton>
         </FooterBlock>
       </FooterContainer>
