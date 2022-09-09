@@ -1,67 +1,37 @@
 import React, { FC } from "react";
-import styled from "styled-components";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-const FooterContainer = styled.div`
-  position: sticky;
-  top: 0;
-  bottom: 0;
-`;
-const FooterBlock = styled.div`
-  width: 390px;
-  background: #ff8e6e;
-  margin: auto;
-  display: flex;
-  justify-content: space-around;
-  padding: 0.35rem;
-`;
-const AllTodoListButton = styled.div`
-  border: none;
-  background: #ff8e6e;
-  padding: 0.5rem;
-`;
-const DateButton = styled.div`
-  border: none;
-  background: #ff8e6e;
-  padding: 0.5rem;
-`;
-
-const AddTodoButtonBlock = styled.div`
-  // position: fixed;
-  // right: 5%;
-  // top: 90%;
-  // width: 3rem;
-  // height: 3rem;
-  // border: 2px solid black;
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
-`;
+import * as Styles from "./style";
 
 interface Props {
   setToggleSwitch: React.Dispatch<React.SetStateAction<boolean>>;
+  pageToggleSwitch: boolean;
 }
-const Footer: FC<Props> = ({ setToggleSwitch }) => {
+const Footer: FC<Props> = ({ setToggleSwitch, pageToggleSwitch }) => {
   return (
     <>
-      <FooterContainer>
-        <FooterBlock>
-          <AllTodoListButton
+      <Styles.FooterContainer>
+        <Styles.FooterBlock>
+          <Styles.AllTodoListButton
             onClick={() => {
               setToggleSwitch(false);
             }}
+            isToggle={false}
+            pageToggleSwitch={pageToggleSwitch}
           >
             <ListAltIcon sx={{ color: "#fff" }} />
-          </AllTodoListButton>
-          <DateButton
+          </Styles.AllTodoListButton>
+          <Styles.AllTodoListButton
             onClick={() => {
               setToggleSwitch(true);
             }}
+            isToggle={true}
+            pageToggleSwitch={pageToggleSwitch}
           >
             <CalendarMonthIcon sx={{ color: "#fff" }} />
-          </DateButton>
-        </FooterBlock>
-      </FooterContainer>
+          </Styles.AllTodoListButton>
+        </Styles.FooterBlock>
+      </Styles.FooterContainer>
     </>
   );
 };

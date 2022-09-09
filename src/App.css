@@ -3,7 +3,7 @@
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 5px;
 }
 
@@ -25,11 +25,19 @@
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: transparent;
-}
+  box-shadow: transparent; */
+/* } */
 .PrivatePickersFadeTransitionGroup-root > div > div > div {
   justify-content: space-around;
 }
 .PrivatePickersSlideTransition-root div div {
   justify-content: space-around;
+}
+
+.MuiPickersDay-root.Mui-selected {
+  background-color: #515070;
+}
+
+.MuiPickersDay-root.Mui-selected:focus {
+  background-color: #515070;
 }

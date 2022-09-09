@@ -1,12 +1,5 @@
-import React, { useState, FC } from "react";
-
-import Stack from "@mui/material/Stack";
-import {
-  ThemeProvider,
-  createTheme,
-  experimental_sx as sx,
-} from "@mui/material/styles";
-import dayjs, { Dayjs } from "dayjs";
+import React, { FC } from "react";
+import { Dayjs } from "dayjs";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -14,7 +7,7 @@ import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { PickersDay } from "@mui/x-date-pickers/PickersDay";
 import Badge from "@mui/material/Badge";
 import { ITask } from "../../interface";
-
+import Brightness1Icon from "@mui/icons-material/Brightness1";
 export interface Props {
   data: ITask[];
   setData: React.Dispatch<React.SetStateAction<ITask[]>>;
@@ -22,75 +15,71 @@ export interface Props {
   setDateValue: React.Dispatch<React.SetStateAction<Dayjs | null>>;
 }
 
-// const theme = createTheme(
-//   {
-//     palette: {
-//       primary: { main: "#1976d2" },
-//     },
-//   },
-//   {
-//     components: {
-//       // Name of the component
-//       MuiStaticDatePicker: {
-//         styleOverrides: {
-//           // Name of the slot
-//           ActionBar: {
-//             ".MuiCalendarPicker-root": {
-//               border: "1px solid black",
-//             },
-//           },
-//         },
-//       },
-//     },
-//   }
-// );
 const DatePicker: FC<Props> = ({ data, setData, dateValue, setDateValue }) => {
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Stack>
-          <StaticDatePicker
-            displayStaticWrapperAs="desktop"
-            value={dateValue}
-            onChange={(newValue) => {
-              setDateValue(newValue);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-            renderDay={(day, selectedDays, pickersDayProps) => {
-              let newMonth =
-                day.month() + 1 > 9
-                  ? (day.month() + 1).toString()
-                  : "0" + (day.month() + 1).toString();
-              let newDay =
-                day.date() < 10
-                  ? "0" + day.date().toString()
-                  : day.date().toString();
-              let newDate = day.year() + newMonth + newDay;
+        <StaticDatePicker
+          displayStaticWrapperAs="desktop"
+          value={dateValue}
+          onChange={(newValue) => {
+            setDateValue(newValue);
+          }}
+          renderInput={(params) => <TextField {...params} />}
+          renderDay={(day, selectedDays, pickersDayProps) => {
+            let newMonth =
+              day.month() + 1 > 9
+                ? (day.month() + 1).toString()
+                : "0" + (day.month() + 1).toString();
+            let newDay =
+              day.date() < 10
+                ? "0" + day.date().toString()
+                : day.date().toString();
+            let newDate = day.year() + newMonth + newDay;
 
-              const isDaySelected =
-                !pickersDayProps.outsideCurrentMonth &&
-                data
-                  .map((item) => {
-                    return item.dateValue;
-                  })
-                  .indexOf(newDate) >= 0;
-              return (
-                <Badge
-                  key={day.toString()}
-                  overlap="circular"
-                  badgeContent={isDaySelected ? "🌚" : undefined}
-                >
-                  <PickersDay {...pickersDayProps} />
-                </Badge>
-              );
-            }}
-            // componentsProps={{
-            //   actionBar: {
-            //     actions: ["today"],
-            //   },
-            // }}
-          />
-        </Stack>
+            // 日期是有資料
+            const isDaySelected =
+              !pickersDayProps.outsideCurrentMonth &&
+              data
+                .map((item) => {
+                  return item.dateValue;
+                })
+                .indexOf(newDate) >= 0;
+
+            // 判斷選中日期的資料還有沒有未完成
+            const dateIsDone = data
+              .filter((item) => {
+                return item.dateValue === newDate;
+              })
+              .some((item) => {
+                return item.isDone === false;
+              });
+
+            return (
+              <Badge
+                key={day.toString()}
+                overlap="circular"
+                badgeContent={
+                  isDaySelected && dateIsDone ? (
+                    <Brightness1Icon
+                      sx={{
+                        width: "10px",
+                        color: "#ff8e6e",
+                      }}
+                    />
+                  ) : undefined
+                }
+              >
+                <PickersDay {...pickersDayProps} />
+              </Badge>
+            );
+          }}
+          // componentsProps={{
+          //   actionBar: {
+          //     actions: ["today"],
+          //   },
+          // }}
+        />
       </LocalizationProvider>
     </>
   );

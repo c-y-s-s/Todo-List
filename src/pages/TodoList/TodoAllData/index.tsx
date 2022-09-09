@@ -1,71 +1,63 @@
 import React, { FC } from "react";
-import styled from "styled-components";
 import { ITask } from "../../interface";
-const TodoAll = styled.div``;
-const TodoAllContainer = styled.div`
-  background: #f6f6f6;
-  display: flex;
-  width: 390px;
-  justify-content: space-between;
-  align-items: center;
-  margin: auto;
-  padding: 2rem;
-`;
-
-const TodoAllBlock = styled.div`
-  width: 390px;
-`;
-const TodoAllTextItem = styled.div`
-  width: 320px;
-  display: flex;
-  align-items: center;
-  color: #515070;
-  padding: 0.75rem 0.85rem;
-  background: #ffbb91;
-  border-radius: 8px;
-  margin: 0.8rem 0rem;
-`;
-
-const TodoAllCheckInput = styled.input`
-  width: 23px;
-  height: 23px;
-`;
-
-const TodoAllTextBlock = styled.div`
-  margin: 0px 0px 0px 0.75rem;
-`;
-const TodoAllTextTime = styled.div`
-  padding-top: 0.25rem;
-  font-size: 12px;
-`;
-const TodoAllText = styled.div`
-  font-weight: 900;
-`;
-
+import * as Styles from "./style";
 interface Props {
-  pageToggleSwitch: boolean;
   data: ITask[];
+  setData: React.Dispatch<React.SetStateAction<ITask[]>>;
 }
-const TodoAllData: FC<Props> = ({ pageToggleSwitch, data }) => {
+
+// data 日期分類
+const TodoAllData: FC<Props> = ({ data, setData }) => {
+  const newData = data.reduce<Record<string, ITask[]>>((result, item) => {
+    result[item.dateValue] = result[item.dateValue] || [];
+    result[item.dateValue].push(item);
+    return result;
+  }, {});
+  const result = Object.values(newData).reverse();
+
+  const handleDoneChange = (id: number): void => {
+    setData(
+      data.map((item) => {
+        return item.id === id ? { ...item, isDone: !item.isDone } : item;
+      })
+    );
+  };
   return (
     <>
-      <TodoAll>
-        <TodoAllContainer>
-          <TodoAllBlock>
-            {data.map((item) => {
+      <Styles.TodoAll>
+        <Styles.TodoAllContainer>
+          <Styles.TodoAllBlock>
+            {result.map((item) => {
               return (
-                <TodoAllTextItem>
-                  <TodoAllCheckInput type="checkbox" />
-                  <TodoAllTextBlock>
-                    <TodoAllText>{item.textValue}</TodoAllText>
-                    <TodoAllTextTime>at 12:00pm</TodoAllTextTime>
-                  </TodoAllTextBlock>
-                </TodoAllTextItem>
+                <>
+                  <Styles.TodoAllDate>{item[0].dateValue}</Styles.TodoAllDate>
+                  {item.map((item) => {
+                    return (
+                      <Styles.TodoAllTextItem>
+                        <Styles.TodoAllCheckInput
+                          type="checkbox"
+                          checked={item.isDone === true}
+                          onChange={() => {
+                            handleDoneChange(item.id);
+                          }}
+                        />
+                        <Styles.TodoAllTextBlock>
+                          <Styles.TodoAllText>
+                            {item.textValue}
+                          </Styles.TodoAllText>
+                          <Styles.TodoAllTextTime>
+                            at {item.timeValue}
+                          </Styles.TodoAllTextTime>
+                        </Styles.TodoAllTextBlock>
+                      </Styles.TodoAllTextItem>
+                    );
+                  })}
+                </>
               );
             })}
-          </TodoAllBlock>
-        </TodoAllContainer>
-      </TodoAll>
+          </Styles.TodoAllBlock>
+        </Styles.TodoAllContainer>
+      </Styles.TodoAll>
     </>
   );
 };

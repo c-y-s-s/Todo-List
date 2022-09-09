@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Title from "./Title";
 import DatePicker from "./DatePicker";
@@ -8,21 +8,36 @@ import dayjs, { Dayjs } from "dayjs";
 import TodoAllData from "./TodoAllData";
 import { useTransition, animated } from "react-spring";
 import { ITask } from "../interface";
-
+import moment from "moment";
 const Container = styled.div`
   height: 100vh;
 `;
 
 export default function TodoList() {
-  const [data, setData] = useState<ITask[]>([
-    {
-      id: 0,
-      textValue: "20220930",
-      dateValue: "20220930",
-      timeValue: "05:30",
-      isDone: false,
-    },
-  ]);
+  const TodayDate = moment()
+    .format("YYYY-MM-DD")
+    .replace("-", "")
+    .replace("-", "");
+
+  const [data, setData] = useState<ITask[]>((): any => {
+    const saved = localStorage.getItem("LEO-DateTodoList") as string;
+
+    const initialValue = JSON.parse(saved);
+
+    if (initialValue) {
+      return initialValue || [];
+    } else {
+      return [
+        {
+          id: 0,
+          textValue: `歡迎試用我的作品^_^`,
+          dateValue: TodayDate,
+          timeValue: "06:03",
+          isDone: false,
+        },
+      ];
+    }
+  });
 
   const [dateValue, setDateValue] = useState<Dayjs | null>(dayjs());
   const [pageToggleSwitch, setToggleSwitch] = useState<boolean>(true);
@@ -32,7 +47,10 @@ export default function TodoList() {
     enter: { opacity: 1, transform: "translate(0px, 0px)" },
     delay: 0,
   });
-  console.log(pageToggleSwitch, "a");
+
+  useEffect(() => {
+    localStorage.setItem("LEO-DateTodoList", JSON.stringify(data));
+  }, [data]);
   return (
     <Container>
       <Title setData={setData} data={data} />
@@ -50,7 +68,7 @@ export default function TodoList() {
                 dateValue={dateValue}
                 setDateValue={setDateValue}
               />
-              <TodoData dateValue={dateValue} data={data} />
+              <TodoData dateValue={dateValue} data={data} setData={setData} />
             </animated.div>
           ))}
         </>
@@ -62,13 +80,16 @@ export default function TodoList() {
                 ...props,
               }}
             >
-              <TodoAllData pageToggleSwitch={pageToggleSwitch} data={data} />
+              <TodoAllData data={data} setData={setData} />
             </animated.div>
           ))}
         </>
       )}
 
-      <Footer setToggleSwitch={setToggleSwitch}></Footer>
+      <Footer
+        setToggleSwitch={setToggleSwitch}
+        pageToggleSwitch={pageToggleSwitch}
+      ></Footer>
     </Container>
   );
 }
