@@ -15,9 +15,10 @@ export const TextItem = styled.div`
   color: #515070;
   padding: 0.7rem 0rem;
   margin: 1rem;
-  &:not(:last-of-type) {
-    border-bottom: 2px solid #fff;
-  }
+  border-bottom: 2px solid #fff;
+  // &:not(:last-of-type) {
+  //   border-bottom: 2px solid #fff;
+  // }
 `;
 
 export const CheckInput = styled.input`
