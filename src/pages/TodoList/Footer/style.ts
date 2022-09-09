@@ -12,6 +12,7 @@ export const FooterBlock = styled.div`
   display: flex;
   justify-content: space-around;
   padding: 0.35rem;
+  border-radius: 0 0 1.2rem 1.2rem;
 `;
 
 interface ButtonProps {

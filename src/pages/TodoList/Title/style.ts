@@ -13,6 +13,7 @@ export const TitleBlock = styled.div`
   width: 390px;
   justify-content: space-between;
   align-items: center;
+  border-radius: 1.2rem 1.2rem 0 0;
   padding: 1.9rem 1rem;
 `;
 export const TitleName = styled.div`
@@ -75,3 +76,13 @@ export const TaskButton = styled.div<TaskButtonProps>`
   color: ${(props) => (props.primary ? "#fff" : "#515070")};
   background: ${(props) => props.primary && "#515070"};
 `;
+
+// export const LoadingBlock = styled.div`
+//  position: absolute;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%)";
+//   background: #FFBB91;
+//   boxShadow: 20;
+//   borderRadius: 4;
+// `;
