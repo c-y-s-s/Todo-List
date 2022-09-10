@@ -56,33 +56,35 @@ export const TodoData: FC<Props> = ({ dateValue, data, setData }) => {
               }}
             >
               {dataIsTheDate ? (
-                data.map((item) => {
-                  const labelId = item.id.toString();
-                  return (
-                    <>
-                      {item.dateValue === newDate && (
-                        <Styles.TextItem key={item.id}>
-                          <Styles.TextItemBlock htmlFor={labelId}>
-                            <Styles.CheckInput
-                              type="checkbox"
-                              id={labelId}
-                              checked={item.isDone === true}
-                              onChange={() => {
-                                handleDoneChange(item.id);
-                              }}
-                            />
-                            <Styles.TextBlock>
-                              <Styles.Text>{item.textValue}</Styles.Text>
-                              <Styles.TextTime>
-                                at {item.timeValue}{" "}
-                              </Styles.TextTime>
-                            </Styles.TextBlock>
-                          </Styles.TextItemBlock>
-                        </Styles.TextItem>
-                      )}
-                    </>
-                  );
-                })
+                React.Children.toArray(
+                  data.map((item) => {
+                    const labelId = item.id.toString();
+                    return (
+                      <>
+                        {item.dateValue === newDate && (
+                          <Styles.TextItem key={item.id}>
+                            <Styles.TextItemBlock htmlFor={labelId}>
+                              <Styles.CheckInput
+                                type="checkbox"
+                                id={labelId}
+                                checked={item.isDone === true}
+                                onChange={() => {
+                                  handleDoneChange(item.id);
+                                }}
+                              />
+                              <Styles.TextBlock>
+                                <Styles.Text>{item.textValue}</Styles.Text>
+                                <Styles.TextTime>
+                                  at {item.timeValue}{" "}
+                                </Styles.TextTime>
+                              </Styles.TextBlock>
+                            </Styles.TextItemBlock>
+                          </Styles.TextItem>
+                        )}
+                      </>
+                    );
+                  })
+                )
               ) : (
                 <Styles.NoScheduleBlock>
                   <EventBusyIcon

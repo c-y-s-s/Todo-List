@@ -27,34 +27,38 @@ const TodoAllData: FC<Props> = ({ data, setData }) => {
       <Styles.TodoAll>
         <Styles.TodoAllContainer>
           <Styles.TodoAllBlock>
-            {result.map((item) => {
-              return (
-                <>
-                  <Styles.TodoAllDate>{item[0].dateValue}</Styles.TodoAllDate>
-                  {item.map((item) => {
-                    return (
-                      <Styles.TodoAllTextItem>
-                        <Styles.TodoAllCheckInput
-                          type="checkbox"
-                          checked={item.isDone === true}
-                          onChange={() => {
-                            handleDoneChange(item.id);
-                          }}
-                        />
-                        <Styles.TodoAllTextBlock>
-                          <Styles.TodoAllText>
-                            {item.textValue}
-                          </Styles.TodoAllText>
-                          <Styles.TodoAllTextTime>
-                            at {item.timeValue}
-                          </Styles.TodoAllTextTime>
-                        </Styles.TodoAllTextBlock>
-                      </Styles.TodoAllTextItem>
-                    );
-                  })}
-                </>
-              );
-            })}
+            {React.Children.toArray(
+              result.map((item) => {
+                return (
+                  <>
+                    <Styles.TodoAllDate key={item[0].id}>
+                      {item[0].dateValue}
+                    </Styles.TodoAllDate>
+                    {item.map((item) => {
+                      return (
+                        <Styles.TodoAllTextItem key={item.id}>
+                          <Styles.TodoAllCheckInput
+                            type="checkbox"
+                            checked={item.isDone === true}
+                            onChange={() => {
+                              handleDoneChange(item.id);
+                            }}
+                          />
+                          <Styles.TodoAllTextBlock>
+                            <Styles.TodoAllText>
+                              {item.textValue}
+                            </Styles.TodoAllText>
+                            <Styles.TodoAllTextTime>
+                              at {item.timeValue}
+                            </Styles.TodoAllTextTime>
+                          </Styles.TodoAllTextBlock>
+                        </Styles.TodoAllTextItem>
+                      );
+                    })}
+                  </>
+                );
+              })
+            )}
           </Styles.TodoAllBlock>
         </Styles.TodoAllContainer>
       </Styles.TodoAll>

@@ -16,6 +16,13 @@ const style = {
   p: 3,
   borderRadius: 4,
 };
+const LoadingStyle = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-10%, -10%)",
+  width: 500,
+};
 
 interface Props {
   data: ITask[];
@@ -36,20 +43,36 @@ const Title: FC<Props> = ({ data, setData }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleTextValue = (event: ChangeEvent<HTMLInputElement>): void => {
-    setAddTaskData({ ...addTaskData, textValue: event.target.value });
-  };
-  const handleDateValue = (event: ChangeEvent<HTMLInputElement>): void => {
-    setAddTaskData({
-      ...addTaskData,
-      dateValue: event.target.value.split("-").join(""),
-    });
-  };
-  const handleTimeValue = (event: ChangeEvent<HTMLInputElement>): void => {
-    setAddTaskData({ ...addTaskData, timeValue: event.target.value });
+  const handleFormChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    switch (event.target.name) {
+      case "textValue": {
+        setAddTaskData({ ...addTaskData, textValue: event.target.value });
+        break;
+      }
+      case "dateValue": {
+        setAddTaskData({
+          ...addTaskData,
+          dateValue: event.target.value.split("-").join(""),
+        });
+        break;
+      }
+      case "timeValue": {
+        setAddTaskData({ ...addTaskData, timeValue: event.target.value });
+        break;
+      }
+      default:
+    }
   };
 
   const handleAddTask = () => {
+    console.log(addTaskData);
+    if (
+      addTaskData.textValue === "" ||
+      addTaskData.dateValue === "" ||
+      addTaskData.timeValue === ""
+    ) {
+      return;
+    }
     handleClose();
     setLoading(true);
 
@@ -65,9 +88,16 @@ const Title: FC<Props> = ({ data, setData }) => {
         ...data,
       ]);
       setLoading(false);
+
+      setAddTaskData({
+        ...addTaskData,
+        textValue: "",
+        dateValue: "",
+        timeValue: "",
+      });
     }, 1000);
   };
-  console.log(loading, "sss");
+
   return (
     <>
       <Styles.TitleContainer>
@@ -93,19 +123,28 @@ const Title: FC<Props> = ({ data, setData }) => {
             <div>
               <Styles.InputName>Text</Styles.InputName>
               <Styles.Input
-                onChange={handleTextValue}
+                onChange={handleFormChange}
                 type="text"
                 value={addTaskData.textValue}
                 placeholder="add task text..."
+                name="textValue"
               />
             </div>
             <div>
               <Styles.InputName>Date</Styles.InputName>{" "}
-              <Styles.Input type="date" onChange={handleDateValue} />
+              <Styles.Input
+                type="date"
+                onChange={handleFormChange}
+                name="dateValue"
+              />
             </div>
             <div>
               <Styles.InputName>Time</Styles.InputName>
-              <Styles.Input onChange={handleTimeValue} type="time" />
+              <Styles.Input
+                onChange={handleFormChange}
+                type="time"
+                name="timeValue"
+              />
             </div>
             <Styles.AddTaskButtonBlock>
               <Styles.TaskButton onClick={handleClose}>
@@ -115,6 +154,23 @@ const Title: FC<Props> = ({ data, setData }) => {
                 Add
               </Styles.TaskButton>
             </Styles.AddTaskButtonBlock>
+          </>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={loading}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={LoadingStyle}>
+          <>
+            <ReactLoading
+              type={"spokes"}
+              color={"#fff"}
+              height={"20%"}
+              width={"20%"}
+            />
           </>
         </Box>
       </Modal>
